@@ -14,6 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY wsgi.py ./
 
-EXPOSE 5001
+EXPOSE 3000
 
-CMD gunicorn --bind 0.0.0.0:5001 wsgi:app
+CMD gunicorn --bind 0.0.0.0:3000 wsgi:app
