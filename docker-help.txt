@@ -1,0 +1,4 @@
+docker login --username alcintra
+docker image build -t alcintra/weasyprint-docker .
+docker image tag alcintra/weasyprint-docker alcintra/weasyprint-docker::vx.x
+docker image push alcintra/weasyprint-docker:vx.x
