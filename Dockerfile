@@ -9,6 +9,7 @@ RUN apt-get -y update \
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
+COPY css ./css
 
 RUN pip install --no-cache-dir -v -r requirements.txt
 

@@ -7,6 +7,7 @@ from functools import wraps
 
 from flask import Flask, request, make_response, abort
 from weasyprint import HTML, CSS
+from weasyprint.text.fonts import FontConfiguration
 
 app = Flask('pdf')
 
@@ -52,6 +53,7 @@ def setup_logging():
         ))
         app.logger.addHandler(handler)
         app.logger.setLevel(logging.DEBUG)
+
         appHasRunBefore = True
 
 @app.route('/')
@@ -74,6 +76,8 @@ def home():
 def generate():
     name = request.args.get('filename', 'unnamed.pdf')
     app.logger.info('POST  /pdf?filename=%s' % name)
+    app.logger.info('content type =%s' % request.headers['Content-Type'])
+
     if request.headers['Content-Type'] == 'application/json':
         data = json.loads(request.data.decode('utf-8'))
         html = HTML(string=data['html'])
@@ -82,6 +86,10 @@ def generate():
     else:
         html = HTML(string=request.data.decode('utf-8'))
         pdf = html.write_pdf()
+#         font_config = FontConfiguration()
+#         css = CSS('./css/fonts.css', font_config=font_config)
+#         pdf = html.write_pdf(stylesheets=[css], font_config=font_config)
+
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'inline;filename=%s' % name
